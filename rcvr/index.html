@@ -1,1 +1,49 @@
-chrome cast receiver
+<html>
+
+	<script src="https://www.gstatic.com/cast/js/receiver/1.0/cast_receiver.js">
+	</script>
+	
+	<script type="text/javascript">
+	var receiver = new cast.receiver.Receiver('3d817983-0b16-499c-89f2-531a3fbf8b95',
+		['cast.receiver.testMedia']);
+
+	var remoteMedia = new cast.receiver.RemoteMedia();
+	remoteMedia.addChannelFactory(
+	    receiver.createChannelFactory('cast.receiver.testMedia'));
+
+	receiver.start();
+
+	window.addEventListener('load', function() {
+	  var elem = document.getElementById('vid');
+	  remoteMedia.setMediaElement(elem);
+
+	  var checkStatus = function() {
+	  	var status = document.getElementById('status');
+	  	var st = remoteMedia.getStatus()['sate'];
+
+	  	if (st == 0 || remoteMedia.getStatus()['currentTime'] > 0) {
+	  		status.innerHTML = 'Paused...';
+	  		status.style.display = 'block';
+	  	}
+	  	else {
+	  		status.innerHTML = remoteMedia.getStatus();
+	  		status.style.display = 'none';
+	  		elem.style.display = 'block';
+	  	}
+	  }
+	   setInterval(checkStatus, 1000);
+	   
+
+	});
+
+	</script>
+	<title>Google Cast HelloWorld Receiver App</title>
+	<body>
+ 		<video id="vid"
+           style="position:absolute;top:0;left:0;height:100%;width:100%">
+    	<div id="status" style="display:none; font-size:300%; position:absolute;top:40%;left:40%;">
+      	<img src="/images/chrome_loading.gif" width="60%">
+    </div>
+	</body>
+
+</html>
